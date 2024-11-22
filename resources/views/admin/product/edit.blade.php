@@ -1,5 +1,6 @@
 <x-admin>
     @section('title', 'Product Edit')
+    <a href="{{ route('admin.product.index') }}" class="btn btn-sm btn-primary float-end mb-5">Back</a>
 
     <div class="form-group mb-3">
         <form action="{{ route('admin.product.update', $product->id) }}" enctype="multipart/form-data" method="POST">
