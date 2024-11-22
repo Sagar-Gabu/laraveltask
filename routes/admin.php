@@ -6,5 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('category', CategoryController::class);
+    Route::resource('product',ProductController::class);
 
 })->middleware('auth');

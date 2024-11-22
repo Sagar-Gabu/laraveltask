@@ -58,16 +58,16 @@
                         <i class="bi bi-search"></i>
                     </a>
                 </li><!-- End Search Icon-->
-                
+
                 @auth
-                    <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-link text-decoration-none">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </button>
-                        </form>
-                    </li>
+                <li class="nav-item">
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link text-decoration-none">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </form>
+                </li>
                 @endauth
             </ul>
         </nav><!-- End Icons Navigation -->
@@ -89,8 +89,14 @@
                     <span>Category</span>
                 </a>
             </li>
-            
-           
+            <li class="nav-item">
+                <a class="nav-link " href="{{ route('admin.product.index') }}">
+                    <i class="bi bi-box"></i>
+                    <span>Product</span>
+                </a>
+            </li>
+
+
         </ul>
     </aside><!-- End Sidebar -->
 
@@ -127,4 +133,3 @@
 </body>
 
 </html>
- 
