@@ -70,12 +70,15 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        $product = Product::with('category')->findOrFail($id);
+        $relatedProducts = Product::where('category_id', $product->category_id)
+                                   ->where('id', '!=', $product->id)
+                                   ->limit(4)
+                                   ->get();
     
-        $product = Product::findOrFail($id);
-        
-        
-        return view('product.detail', compact('product'));
+        return view('products.show', compact('product', 'relatedProducts'));
     }
+    
     
     /**
      * Show the form for editing the specified resource.
