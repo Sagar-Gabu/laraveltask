@@ -5,59 +5,22 @@
         @method('PUT')
         @csrf
         <div class="form-group mb-3">
-            <label for="name" class="form-label">Edit category</label>
-            <a href="{{ route('admin.category.index') }}" class="btn btn-sm btn-primary float-end mb-5">Back</a>
+        <a href="{{ route('admin.category.index') }}" class="btn btn-sm btn-primary float-end mb-5">Back</a>
 
-            <input value="{{ $category->name }}" type="text" name="name" id="name" class="form-control">
-            @error('name')
-            <span class="text-danger">{{ $message }}</span>
-            @enderror
+            <label for="name" class="form-label">Edit category</label>
+            <div class="form-group mt-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ $category->name }}">
+            </div>
+
+            <div class="form-group mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="image" id="image" class="form-control" required>
+        </div>
+           
         </div>
         <div class="form-group mb-3">
             <button class="btn btn-primary" id="submitBtn" type="button">Save</button>
         </div>
     </form>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-    <script>
-    $(document).ready(function() {
-        $('#submitBtn').click(function(e) {
-            e.preventDefault(); 
-
-            let formData = {
-                _token: "{{ csrf_token() }}",
-                _method: "PUT", 
-                name: $('#name').val(),
-            };
-
-        
-            if ($('#name').val() === '') {
-                alert('Category name is required');
-                return;
-            }
-
-            $.ajax({
-                url: "{{ route('admin.category.update', $category->id) }}", 
-                type: 'POST', 
-                data: formData,
-                success: function(response) {
-                    alert('Category updated successfully');
-                    window.location.href = "{{ route('admin.category.index') }}";
-                },
-                error: function(xhr, status, error) {
-                    
-                    const errors = xhr.responseJSON.errors;
-                    if (errors.name) {
-                        alert(errors.name[0]); 
-                    } else {
-                        alert('Something went wrong');
-                    }
-                }
-            });
-        });
-    });
-</script>
-
-
 </x-admin>

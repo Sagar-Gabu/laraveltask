@@ -1,72 +1,22 @@
 <x-admin>
-    @section('title','Category Create')
-    <form action="{{ route('admin.category.store') }}" method="POST" id="create" class="needs-validation" novalidate>
+    @section('title', 'Category Create')
+
+    <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data" id="create" class="needs-validation" novalidate>
         @csrf
         <a href="{{ route('admin.category.index') }}" class="btn btn-sm btn-primary float-end mb-5">Back</a>
 
         <div class="form-group mb-3">
             <label for="name" class="form-label">Name</label>
-            <input value="{{ old('name') }}" type="text" name="name" id="name" class="form-control">
-            @error('name')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
+            <input type="text" name="name" id="name" class="form-control" required>
         </div>
+
+        <div class="form-group mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="image" id="image" class="form-control" required>
+        </div>
+
         <div class="form-group mb-3">
             <button class="btn btn-primary" type="submit">Save</button>
         </div>
     </form>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script>
-        function ajaxCall() {
-            $.ajax({
-                url: "{{route('admin.category.index')}}",
-                method: "GET",
-                data: {},
-                success: function(response) {
-                    $(".showdiv").html(response); 
-                }
-            });
-        }
-
-        $("#create").on('submit', function(e) {
-            e.preventDefault();
-
-            let name = $("#name").val();
-            
-            
-            if (name === '') {
-                alert('Name is required');
-                return;
-            }
-
-            $.ajax({
-                url: "{{route('admin.category.store')}}",
-                method: "POST",
-                data: {
-                    "_token": "{{csrf_token()}}",
-                    "name": name,
-                },
-                success: function(response) {
-                
-                    $('#name').val("");
-
-                    
-                    alert('Category created successfully!');
-                    
-                    
-                    ajaxCall();
-                },
-                error: function(xhr, status, error) {
-                    
-                    const errors = xhr.responseJSON.errors;
-                    if (errors.name) {
-                        alert(errors.name[0]);
-                    } else {
-                        alert('Something went wrong!');
-                    }
-                }
-            });
-        });
-    </script>
 </x-admin>

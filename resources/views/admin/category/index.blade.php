@@ -5,8 +5,10 @@
         <thead>
             <tr>
                 <th scope="col">No</th>
+                <th scope='col'>image</th>
                 <th scope="col">Name</th>
                 <th scope="col">slug</th>
+
                 <th scope="col" colspan="2">Action</th>
             </tr>
         </thead>
@@ -14,6 +16,7 @@
             @forelse ($categories as $category)
             <tr id="category-row-{{ $category->id }}">
                 <th scope="row">{{ $category->id }}</th>
+                <td><img height="50" src="{{ asset('images/'.$category->image)}}"alt="{{ $category->image}}"></td>
                 <td>{{ $category->name }}</td>
                 <td>{{$category->slug}}</td>
                 <td>
@@ -23,7 +26,7 @@
             </tr>
             @empty
             <tr>
-                <th class="bg-danger text-center text-white" colspan="4">No categories.</th>
+                <th class="bg-danger text-center text-white" colspan="5">No categories.</th>
             </tr>
             @endforelse
         </tbody>

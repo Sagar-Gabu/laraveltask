@@ -34,10 +34,19 @@ class CategoryController extends Controller
     { {
             $request->validate([
                 'name' => 'required|max:255|min:3',
+                'image' => 'required',
             ]);
+
+            $destinationPath = 'images'; //folder store
+            $myimage = $request->image->getClientOriginalName(); //get file name
+            $request->image->move(public_path($destinationPath), $myimage); //move to folder image
+
+
+
             $category = new Category();
             $category->name = $request->name;
             $category->slug = Str::slug($request->name);
+            $category->image = $myimage;
             $category->save();
             return redirect()->route('admin.category.index');
         }
@@ -68,17 +77,22 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-    
+
         $request->validate([
             'name' => 'required|max:255|min:3',
+            'image' => 'nullable|jpeg,png,jpg',
         ]);
 
-        
+        $destinationPath = 'images'; //folder store
+        $myimage = $request->image->getClientOriginalName(); // get file name
+        $request->image->move(public_path($destinationPath), $myimage); // move to folder image
+
+        $category->image = $myimage;
         $category->name = $request->name;
         $category->slug = Str::slug($request->name);
         $category->save();
 
-        return response()->json(['message' => 'Category updated successfully']);
+        return redirect()->route('admin.category.index')->with('success', 'category updated successfully!');
     }
 
 
@@ -88,8 +102,9 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
+        $category->products()->delete();
         $category->delete();
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Category and related products deleted successfully.');
     }
 }
