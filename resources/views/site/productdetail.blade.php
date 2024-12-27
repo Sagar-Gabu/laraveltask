@@ -22,7 +22,7 @@
                     <p>{{ $product->description }}</p>
                 </div>
                 
-                <a href="#" class="btn btn-primary">Add to Cart</a>
+                <a href="{{url('add_cart',$product->id)}}" class="btn btn-primary">Add to Cart</a>
             </div>
         </div>
 

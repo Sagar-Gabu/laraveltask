@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\cart;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -82,5 +85,43 @@ public function showProductsByCategory($id)
 
     return view('site.shop', compact('category', 'products'));
 }
+
+public function add_cart($id)
+{
+    $user = Auth::user();
+    if (!$user) {
+        return redirect()->route('login')->with('error', 'You must be logged in to add products to the cart.');
+    }
+
+    // Check if the product exists
+    $product = Product::find($id);
+    if (!$product) {
+        return redirect()->back()->with('error', 'Product not found.');
+    }
+
+    // Check if the product is already in the user's cart
+    $cartItem = Cart::where('user_id', $user->id)
+                    ->where('product_id', $id)
+                    ->first();
+
+    if ($cartItem) {
+        // If the product is already in the cart, increase the quantity
+        $cartItem->quantity += 1;
+        $cartItem->save();
+
+        return redirect()->back()->with('success', 'Product quantity updated in the cart.');
+    } else {
+        // If the product is not in the cart, create a new cart entry
+        $cart = new Cart();
+        $cart->user_id = $user->id;
+        $cart->product_id = $id;
+        $cart->save();
+
+        return redirect()->back()->with('success', 'Product added to cart.');
+    }
+}
+
+
+
 
 }
